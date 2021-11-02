@@ -43,7 +43,8 @@ class Station #
     @arrived_trains = []
     @@station_count +=1
     puts "log: создана станция #{@station_name}"
-    puts @@stations
+    puts "log: итого станций"
+    puts "log: #{@@stations}"
   end
 
   def self.number_of_station #подсчет количества станций
@@ -78,8 +79,8 @@ class Station #
         puts "На станции нет поездов"
       else
       puts "log: На стации  #{@station_name} стоят следующие поезда:"
-      @arrived_trains.each do  |key,value|
-        puts "поезд № #{key}, тип поезда #{value}"
+      @arrived_trains.each do  |key|
+        puts "поезд № #{key.train_name}, тип поезда #{key.train_type}"
         end
       end
   end
@@ -102,9 +103,9 @@ class Station #
     end
 
   end
-  def departure (train_num)
-    @arrived_trains.delete(train_num)
-    puts "поезд №#{train_num} покинул станцию #{@station_name}"
+  def departure (train)
+    @arrived_trains.delete(train)
+    puts "поезд №#{train.train_name} покинул станцию #{@station_name}"
 
   end
 
@@ -117,29 +118,32 @@ attr_accessor :end_station
 @@routes_count = 0
 attr_accessor :route_name
 attr_reader :station_list
+attr_reader :deleted
 
   def initialize (name,station1,station2)
     @route_name = name
     @station1 = station1
     @station2 = station2
-    @begin_station = @station1.station_name
-    @end_station = @station2.station_name
+    @begin_station = @station1
+    @end_station = @station2
     @station_list = [@begin_station,@end_station]
     @@routes_count +=1
     puts "Создан маршрут #{@route_name}"
-    puts "начальная станция: #{@begin_station}, конечная станция: #{@end_station} "
+    puts "начальная станция: #{@begin_station.station_name}, конечная станция: #{@end_station.station_name} "
   end
 
   def add_station(station) #Добавляем промежуточную станцию, при этом последняя всегда сдвигается
     @station_new = station
     @last_station = @station_list.last
-    @station_list[@station_list.length-1] = @station_new.station_name
+    @station_list[@station_list.length-1] = @station_new
     @station_list.insert(@station_list.length, @last_station)
   end
   def delete (i)
+    @deleted = 0
     if i <= @station_list.length && i>0
+      @deleted = @station_list[i-1]
       @station_list.delete_at(i-1)
-      puts "станция #{i} удалена"
+      puts "станция #{i} #{@deleted.station_name} удалена"
     else
       puts "такой станции нет"
     end
@@ -148,7 +152,7 @@ attr_reader :station_list
     puts "Маршрут состоит из следующих станций"
     @i = 0
     @station_list.each do |value|
-      puts "#{@i+1}. #{@station_list[@i]}"
+      puts "#{@i+1}. #{@station_list[@i].station_name}"
       @i +=1
     end
 
@@ -221,9 +225,13 @@ class Train  # класс создаем поезд
     puts "Поезд отправляется со станции #{@route.station_list[@current_station]}"
 
     if @current_station <@route.station_list.count-1
+
+      @departure_station = @route.station_list[@current_station]
+      @departure_station.departure(self)
       @current_station +=1
-      @current_station_name = @route.station_list[@current_station]
-      puts "Вы прибыли на станцию#{@current_station_name}"
+      @arrival_station = @route.station_list[@current_station]
+      @arrival_station.arrival(self)
+      puts "Вы прибыли на станцию#{@current_station_name.station_name}"
     else
       puts "Вы достигли конечной станции. Поезд дальше не идет"
     end
@@ -233,12 +241,17 @@ class Train  # класс создаем поезд
     puts "Поезд отправляется со станции #{@route.station_list[@current_station]}"
 
     if @current_station <@route.station_list.count &&@current_station>0
+
+      @departure_station = @route.station_list[@current_station]
+      @departure_station.departure(self)
       @current_station -=1
-      @current_station_name = @route.station_list[@current_station]
-      puts "Вы прибыли на станцию #{@current_station_name}"
+      @arrival_station = @route.station_list[@current_station]
+      @arrival_station.arrival(self)
+      puts "Вы прибыли на станцию#{@current_station_name.station_name}"
     else
       puts "Вы достигли конечной станции. Поезд дальше не идет"
     end
+
   end
 
   def display_st
