@@ -94,6 +94,41 @@ WAGOON_MENU =
 			@routes.push(Route.new(n,@stations[b],@stations[e]))
 	end
 
+	def display_route
+		puts "список маршрутов"
+		i = 0
+		@routes.each do |value|
+			puts "#{i}.#{value.route_name}"
+			i +=1
+		end
+
+	end
+
+
+	def change_route
+		puts "Выберите номер маршрута, который хотите поменять"
+		self.display_route
+		print "Выберите номер: "
+		i = gets.chomp.to_i
+		puts "выберите действие 1 - добавить станцию, 2 - удалить "
+		action = gets.chomp.to_i
+		case action
+		when 1 then
+			puts "выберите номер станции, которую добавить"
+			self.display_station
+			k = gets.chomp.to_i
+			@routes[i].add_station(@station[k])
+		when 2 then
+			puts "выберите номер станции которую удалить из маршрута"
+			@routes[i].display
+			k = gets.chomp.to_i
+			@routes[i].delete(k)
+		else
+			puts "вы выбрали что-то непонятное"
+		end
+	end
+
+
 	def create_train
 			puts "Выберите какой поезд создать"
 			puts "1 - грузовой"
@@ -118,5 +153,21 @@ WAGOON_MENU =
 	end
 
 
+
+
+	def create_wagoon
+		@wagoons.push(Wagoon.new())
+		puts WAGOON_MENU
+	end
+
+	def display_wagoon
+		puts "список вагонов"
+		i = 0
+		@wagoons.each do |value|
+			puts "#{i}.#{value.wagoon_type}"
+			i +=1
+		end
+		puts WAGOON_MENU
+	end
 
 end

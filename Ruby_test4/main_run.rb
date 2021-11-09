@@ -38,6 +38,17 @@ menu = Main.new()
 
 		when 3 then # операции с вагонами
 			puts Main::WAGOON_MENU
+			a2 = gets.chomp.to_i
+			loop do
+				case a2
+				when 1 then menu.create_wagoon
+				when 2 then menu.display_wagoon
+				when 0 then break
+				else
+					puts "вы ввели некорректное значение"
+				end
+				a2 = gets.chomp.to_i
+			end
 
 		when 4 then #операции с маршрутами
 			puts Main::ROUTES_MENU
@@ -45,8 +56,7 @@ menu = Main.new()
 			loop do
 				case a2
 				when 1 then menu.create_route
-				when 2 then menu.display_station
-				when 3 then menu.count_trains
+				when 2 then menu.change_route
 				when 0 then break
 				else
 					puts "вы ввели некорректное значение"
