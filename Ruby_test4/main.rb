@@ -7,7 +7,8 @@ require_relative  'passenger.rb'
 require_relative  'wagoon.rb'
 attr_accessor :stations,:trains,:routes,:wagoons
 INSTRUCTIONS =
-'Выберите раздел
+'
+Выберите раздел
 1 - операции со станциями
 2 - операции с поездами
 3 - операции с вагонами
@@ -15,20 +16,23 @@ INSTRUCTIONS =
 0 - выйти'
 
 STATION_MENU =
-'Выберите раздел
+'
+Выберите раздел
 1 - создать станцию
 2 - просмотреть все доступные станции
 3 - просмотреть количество поездов на станции
 0 - вернуться в предыдущее меню'
 
 ROUTES_MENU =
-'Выберите раздел
+'
+Выберите раздел
 1 - создать маршрут
 2 - добавить\удалить станцию к маршруту
 0 - вернуться в предыдущее меню'
 
 TRAIN_MENU =
-'Выберите раздел
+'
+Выберите раздел
 1 - создать поезд
 2	- добавить / удалить вагон
 3 - просмотреть все поезда
@@ -37,7 +41,8 @@ TRAIN_MENU =
 0 - вернуться в предыдущее меню'
 
 WAGOON_MENU =
-'Выберите раздел
+'
+Выберите раздел
 1 - создать вагон
 2 - просмотреть все вагоны
 0 - вернуться в предыдущее меню'
@@ -56,6 +61,7 @@ WAGOON_MENU =
 	def create_station
 			print "введите имя новой станции: "
 			@stations.push(Station.new(gets.chomp.to_s))
+			puts STATION_MENU
 	end
 
 	def display_station
@@ -65,8 +71,11 @@ WAGOON_MENU =
 				puts "#{i}.#{value.station_name}"
 				i +=1
 			end
+			puts STATION_MENU
 
 	end
+
+
 
 	def count_trains
 		puts "пжл-та выберите номер станции"
@@ -75,14 +84,14 @@ WAGOON_MENU =
 		self.display_station
 		print "номер станции: "
 		i = gets.chomp.to_i
-		puts "log #{i}"
+		puts "log: #{i}"
 		@stations[i].count_train
 		puts STATION_MENU
 	end
 
 	def create_route
 			puts "Чтобы создать маршрут выберите номер начальной и конечной станции"
-			self.display_station
+			self.display_station?
 			print "выберите название маршрута: "
 			n = gets.chomp.to_s
 
@@ -92,6 +101,7 @@ WAGOON_MENU =
 			e = gets.chomp.to_i
 
 			@routes.push(Route.new(n,@stations[b],@stations[e]))
+			puts ROUTES_MENU
 	end
 
 	def display_route
@@ -101,28 +111,33 @@ WAGOON_MENU =
 			puts "#{i}.#{value.route_name}"
 			i +=1
 		end
-
+		puts ROUTES_MENU
 	end
 
 
 	def change_route
-		puts "Выберите номер маршрута, который хотите поменять"
-		self.display_route
+		puts "n\ Выберите номер маршрута, который хотите поменять"
+		self.display_route?
 		print "Выберите номер: "
 		i = gets.chomp.to_i
 		puts "выберите действие 1 - добавить станцию, 2 - удалить "
 		action = gets.chomp.to_i
 		case action
 		when 1 then
+
 			puts "выберите номер станции, которую добавить"
-			self.display_station
+			self.display_station?
 			k = gets.chomp.to_i
 			@routes[i].add_station(@station[k])
+			puts ROUTES_MENU
+
 		when 2 then
 			puts "выберите номер станции которую удалить из маршрута"
 			@routes[i].display
 			k = gets.chomp.to_i
 			@routes[i].delete(k)
+			@routes[i].display
+			puts ROUTES_MENU
 		else
 			puts "вы выбрали что-то непонятное"
 		end
@@ -168,6 +183,26 @@ WAGOON_MENU =
 			i +=1
 		end
 		puts WAGOON_MENU
+	end
+
+	private
+	def display_station?
+			puts "список всех станций"
+			i = 0
+			@stations.each do |value|
+				puts "#{i}.#{value.station_name}"
+				i +=1
+			end
+
+	end
+
+	def display_route?
+		puts "список маршрутов"
+		i = 0
+		@routes.each do |value|
+			puts "#{i}.#{value.route_name}"
+			i +=1
+		end
 	end
 
 end

@@ -2,7 +2,7 @@ class Route
 attr_accessor :route_name # имя маршрута
 attr_accessor :begin_station
 attr_accessor :end_station
-@@routes_count = 0
+
 attr_accessor :route_name
 attr_reader :station_list
 attr_reader :deleted
@@ -14,7 +14,7 @@ attr_reader :deleted
     @begin_station = @station1
     @end_station = @station2
     @station_list = [@begin_station,@end_station]
-    @@routes_count +=1
+
     puts "Создан маршрут #{@route_name}"
     puts "начальная станция: #{@begin_station.station_name}, конечная станция: #{@end_station.station_name} "
   end
@@ -24,7 +24,9 @@ attr_reader :deleted
     @last_station = @station_list.last
     @station_list[@station_list.length-1] = @station_new
     @station_list.insert(@station_list.length, @last_station)
-  end
+		puts "станция добавлена"
+		puts self.display
+	end
   def delete (i)
     @deleted = 0
     if i <= @station_list.length && i>0
