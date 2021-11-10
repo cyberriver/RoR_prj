@@ -1,6 +1,5 @@
 class Train  # super класс создаем поезд
   attr_accessor :speed
-  attr_accessor :wagoon_count
   attr_accessor :train_name
   attr_accessor :train_type
   attr_accessor :train_type_name
@@ -20,34 +19,29 @@ class Train  # super класс создаем поезд
     @speed +=delta
   end
 
-	
-  def change_wagoon (operation, wagoon) #изменить состав поезда , 1 - удалить, 2 добавить
-			@operation = operation
-			@wagoon = wagoon
 
-			if check_wagoon?
-				loop do
-					@wagoon =gets.chomp
-					break if check_wagoon? == false
-				end
+	def add_wagoon (wagoon) #изменить состав поезда , 1 - удалить, 2 добавить
+			if wagoon.wagoon_type == @train_type
+				 @wagoons.push(wagoon)
+			else
+				puts "К пассажирскому поезду можно прицепить только пассажирские, к грузовому - грузовые"
+				puts "пжл-та укажите другой вагон"
 			end
-		  if @speed != 0
-		          puts "поезд находится в движении, выполните команду stop"
-		  else
+			self.display_w
+	end
 
-		      if @operation ==1
-									@wagoons.delete(wagoon)
-		              @wagoon_count = @wagoon_count -1
+	def display_w
+			i = 0
+			@wagoons.each do |value|
+				puts "#{i}. #{value}"
+				i+=1
+			end
 
-		       elsif @operation ==2
-									@wagoons.push(wagoon)
-		              @wagoon_count = @wagoon_count + 1
+	end
 
-		        end
-
-		    end
-
-    end
+  def delete_wagoon (wagoon) #изменить состав поезда , 1 - удалить, 2 добавить
+			@wagoons.delete(wagoon)
+	end
 
   def stop #полный стоп
     @speed = 0
@@ -102,18 +96,5 @@ class Train  # super класс создаем поезд
 
   end
 
-	def check_wagoon?
-
-		if @wagoon.wagoon_type == @train_type
-			return false
-		else
-			puts "К пассажирскому поезду можно прицепить только пассажирские, к грузовому - грузовые"
-			puts "пжл-та укажите другой вагон или наберите exit, чтобы выйти"
-
-			return true
-
-		end
-
-	end
 
 end

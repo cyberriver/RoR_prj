@@ -34,10 +34,11 @@ TRAIN_MENU =
 '
 Выберите раздел
 1 - создать поезд
-2	- добавить / удалить вагон
+2	- добавить или удалить вагон
 3 - просмотреть все поезда
 4 - назначить маршрут поезду
 5 - поехать по маршруту
+6 - вернуться назад по маршруту
 0 - вернуться в предыдущее меню'
 
 WAGOON_MENU =
@@ -116,7 +117,7 @@ WAGOON_MENU =
 
 
 	def change_route
-		puts "n\ Выберите номер маршрута, который хотите поменять"
+		puts "Выберите номер маршрута, который хотите поменять"
 		self.display_route?
 		print "Выберите номер: "
 		i = gets.chomp.to_i
@@ -128,7 +129,7 @@ WAGOON_MENU =
 			puts "выберите номер станции, которую добавить"
 			self.display_station?
 			k = gets.chomp.to_i
-			@routes[i].add_station(@station[k])
+			@routes[i].add_station(@stations[k])
 			puts ROUTES_MENU
 
 		when 2 then
@@ -153,22 +154,92 @@ WAGOON_MENU =
 
 			if o ==1
 
-			puts "введите номер нового грузового поезда"
-			@stations.push(Train.new(gets.chomp.to_s))
+			puts "введите номер нового грузового поезда: "
+			@trains.push(CargoTrain.new(gets.chomp.to_s))
 
 		elsif o ==2
-			puts "введите номер нового пассажирского поезда"
-			@stations.push(Train.new(gets.chomp.to_s))
+			puts "введите номер нового пассажирского поезда: "
+			@trains.push(PassengerTrain.new(gets.chomp.to_s))
 		else
 			puts "вы ввели что-то нето"
 		end
-		puts "                    "
-		puts "===================="
 		puts TRAIN_MENU
 	end
 
+	def change_wagoon
+			self.display_train?
+			print "Выберите номер поезда для изменения состава "
+			i = gets.chomp.to_i
+			puts "выберите действие 1 - добавить, 2 - удалить "
+			action = gets.chomp.to_i
 
+			case action
+			when 1 then
 
+				puts "выберите вагон, который добавить"
+				self.display_wagoon?
+				k = gets.chomp.to_i
+				@trains[i].add_wagoon(@wagoons[k])
+				puts TRAIN_MENU
+
+			when 2 then
+				puts "выберите вагон, который отцепить"
+				@trains[i].display_w
+				k = gets.chomp.to_i
+				@trains[i].delete(k)
+				@trains[i].display
+				puts TRAIN_MENU
+			else
+				puts "вы выбрали что-то непонятное"
+			end
+
+	end
+
+	def display_train
+		puts "список всех поездов"
+		i = 0
+		@trains.each do |value|
+			puts "#{i}.#{value.train_name}"
+			i +=1
+		end
+		puts TRAIN_MENU
+	end
+
+	def count_train
+		self.display_station
+		print "выберите пжл-та станцию: "
+		i=gets.chomp.to_i
+		@stations[i].count_train
+
+	end
+
+	def set_route
+		self.display_train?
+		print "пжл-та выберите поезд"
+		t = gets.chomp.to_i
+		self.display_route?
+		print "пжл-та выберите маршрут для назначения поезду"
+		i=gets.chomp.to_i
+		@trains[t].set_route(@routes[i])
+		puts "поезду #{@trains[t].train_name} назначен маршрут #{@routes[i]}"
+		puts TRAIN_MENU
+	end
+
+	def move_on
+		self.display_train?
+		print "пжл-та выберите поезд"
+		t = gets.chomp.to_i
+		@trains[t].go_on_route
+		puts TRAIN_MENU
+	end
+
+	def move_back
+		self.display_train?
+		print "пжл-та выберите поезд"
+		t = gets.chomp.to_i
+		@trains[t].go_back_route
+		puts TRAIN_MENU
+	end
 
 	def create_wagoon
 		@wagoons.push(Wagoon.new())
@@ -179,13 +250,13 @@ WAGOON_MENU =
 		puts "список вагонов"
 		i = 0
 		@wagoons.each do |value|
-			puts "#{i}.#{value.wagoon_type}"
+			puts "#{i}.#{value.wagoon_name}"
 			i +=1
 		end
 		puts WAGOON_MENU
 	end
 
-	private
+	private #методы, которые используются внутри других методов
 	def display_station?
 			puts "список всех станций"
 			i = 0
@@ -196,11 +267,30 @@ WAGOON_MENU =
 
 	end
 
+	def display_wagoon?
+			puts "список всех вагонов"
+			i = 0
+			@wagoons.each do |value|
+				puts "#{i}.#{value.wagoon_name}"
+				i +=1
+			end
+
+	end
+
 	def display_route?
 		puts "список маршрутов"
 		i = 0
 		@routes.each do |value|
 			puts "#{i}.#{value.route_name}"
+			i +=1
+		end
+	end
+
+	def display_train?
+		puts "список всех поездов"
+		i = 0
+		@trains.each do |value|
+			puts "#{i}.#{value.train_name}"
 			i +=1
 		end
 	end

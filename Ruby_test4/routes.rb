@@ -20,12 +20,12 @@ attr_reader :deleted
   end
 
   def add_station(station) #Добавляем промежуточную станцию, при этом последняя всегда сдвигается
-    @station_new = station
-    @last_station = @station_list.last
-    @station_list[@station_list.length-1] = @station_new
-    @station_list.insert(@station_list.length, @last_station)
+		if @station_list.include?(station)
+			puts "такая станция уже есть"
+		else
+    @station_list.insert(-2, station)
 		puts "станция добавлена"
-		puts self.display
+		end
 	end
   def delete (i)
     @deleted = 0
