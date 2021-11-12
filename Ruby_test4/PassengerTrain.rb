@@ -5,5 +5,4 @@ class PassengerTrain < Train
 		@train_type = 2
 		@train_type_name = "пассажирский"
 	end
-
 end
