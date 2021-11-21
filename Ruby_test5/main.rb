@@ -152,12 +152,7 @@ class Main
   end
 
   def display_station
-    puts "список всех станций"
-    i = 0
-    @stations.each do |value|
-      puts "#{i}.#{value.station_name}"
-      i +=1
-    end
+    Station.all
     puts STATION_MENU
   end
 
@@ -269,7 +264,7 @@ class Main
     puts "список всех поездов"
     i = 0
     @trains.each do |value|
-      puts "#{i}.#{value.train_name}"
+      puts "#{i}.#{value.train_num}"
       i +=1
     end
     puts TRAIN_MENU
@@ -290,7 +285,7 @@ class Main
     print "пжл-та выберите маршрут для назначения поезду"
     i=gets.chomp.to_i
     @trains[t].set_route(@routes[i])
-    puts "поезду #{@trains[t].train_name} назначен маршрут #{@routes[i]}"
+    puts "поезду #{@trains[t].train_num} назначен маршрут #{@routes[i]}"
     puts TRAIN_MENU
   end
 
@@ -355,7 +350,7 @@ class Main
     puts "список всех поездов"
     i = 0
     @trains.each do |value|
-      puts "#{i}.#{value.train_name}"
+      puts "#{i}.#{value.train_num}"
       i +=1
     end
   end

@@ -1,9 +1,27 @@
+$LOAD_PATH << '.'
+require 'instance_counter.rb'
+
 class Station #
   attr_accessor :station_name, :arrived_trains
+  include Instance_counter
+  @@stations =0
+  @@all_stations=[]
+
+  def self.all
+    @@all_stations=ObjectSpace.each_object(self).to_a
+    puts "Всего создано станций: #{@@stations}"
+    i = 1
+    @@all_stations.each do |value|
+      puts "#{i}.#{value.station_name}"
+      i +=1
+    end
+  end
 
   def initialize (station_name) #создание станции
     @station_name = station_name
     @arrived_trains = []
+    @@stations +=1
+    register_instances
   end
 
   def arrival (train) #прибытие поезда на станцию

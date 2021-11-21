@@ -1,18 +1,31 @@
 $LOAD_PATH << '.'
 require 'producer.rb'
+require 'instance_counter.rb'
 
 class Train  # super класс создаем поезд
   include Producer
-  attr_accessor :speed, :train_name, :train_type, :train_type_name
+  include Instance_counter
+  attr_accessor :speed, :train_num, :train_type, :train_type_name
   attr_reader :current_station, :current_station_name
+  @@all_trains=[]
+
+  def self.find(num)
+    @@all_trains=ObjectSpace.each_object(self).to_a
+    @@all_trains.each do |value|
+      if value.train_num ==num
+        return value
+      end
+    end
+  end
 
   def initialize (num)
-    @train_name=num
+    @train_num=num.to_s
     @wagoon_count=0
     @speed = 0
     @train_type = 0
     @train_type_name ="metaTrain"
     @wagoons = []
+    register_instances
   end
 
   def gas_on (delta) #повышение скорости поезда на дельту

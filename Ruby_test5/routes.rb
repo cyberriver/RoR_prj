@@ -1,10 +1,15 @@
+$LOAD_PATH << '.'
+require 'instance_counter.rb'
+
 class Route
   attr_accessor :route_name
   attr_reader :station_list, :deleted
+  include Instance_counter
 
   def initialize (name,station1,station2)
     @route_name = name
     @station_list = [station1,station2]
+    register_instances
   end
 
   def add_station(station) #Добавляем промежуточную станцию, при этом последняя всегда сдвигается
