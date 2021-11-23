@@ -27,18 +27,6 @@ class Station #
 
   def arrival (train) #прибытие поезда на станцию
     @arrived_trains.push(train)
-    puts "На станцию #{@station_name} прибыл поезд #{@arrived_trains.last.train_name}"
-  end
-
-  def display #показать все поезда на станции
-    if @arrived_trains.nil?
-      puts "На станции нет поездов"
-    else
-      puts "На стации  #{@station_name} стоят следующие поезда:"
-      @arrived_trains.each do  |key|
-        puts "поезд № #{key.train_name}, тип поезда #{key.train_type}"
-      end
-    end
   end
 
   def count_train #посчиать количество поездов по типам

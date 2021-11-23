@@ -53,10 +53,6 @@ class Route
 
   private # метод для валидации введенного значения
   def validate!
-    raise "Название станции не может быть пустым" if @station1==""
-    raise "Название станции не может быть пустым" if @station2==""
-    raise "Название станции не может быть меньше 5 символов" if @station1.length<5
-    raise "Название станции не может быть меньше 5 символов" if @station2.length<5
+    [@station1, @station2].each {|station| raise "Название станции не может быть пустым" if station == ""}
   end
-
 end

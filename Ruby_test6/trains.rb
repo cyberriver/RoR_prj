@@ -8,6 +8,7 @@ class Train  # super класс создаем поезд
   attr_accessor :speed, :train_num, :train_type, :train_type_name
   attr_reader :current_station, :current_station_name
   @@all_trains=[]
+  PATTERN = /^([а-я]|\d)([а-я]|\d)([а-я]|\d)(-|)([а-я]|\d)([а-я]|\d)/i
 
   def self.find(num)
     @@all_trains=ObjectSpace.each_object(self).to_a
@@ -110,8 +111,8 @@ class Train  # super класс создаем поезд
 
   private # метод для валидации введенного значения
   def validate!
-    pattern = /^([а-я]|\d)([а-я]|\d)([а-я]|\d)(-|)([а-я]|\d)([а-я]|\d)/i
-    raise "Номер не соответствует шаблону" if @train_num !~ pattern
+
+    raise "Номер не соответствует шаблону" if @train_num !~ PATTERN
     raise "Номер не может быть пустым" if @train_num==""
     raise "Номер не может быть меньше 3х символов" if @train_num.length<3
   end
