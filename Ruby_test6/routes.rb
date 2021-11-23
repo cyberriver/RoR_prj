@@ -8,8 +8,11 @@ class Route
 
   def initialize (name,station1,station2)
     @route_name = name
-    @station_list = [station1,station2]
+    @station1 = station1
+    @station2 = station2
+    @station_list = [@station1,@station2]
     register_instances
+    validate!
   end
 
   def add_station(station) #Добавляем промежуточную станцию, при этом последняя всегда сдвигается
@@ -40,4 +43,20 @@ class Route
       i +=1
     end
   end
+
+  def valid?
+    validate!
+    true
+  rescue
+    false
+  end
+
+  private # метод для валидации введенного значения
+  def validate!
+    raise "Название станции не может быть пустым" if @station1==""
+    raise "Название станции не может быть пустым" if @station2==""
+    raise "Название станции не может быть меньше 5 символов" if @station1.length<5
+    raise "Название станции не может быть меньше 5 символов" if @station2.length<5
+  end
+
 end

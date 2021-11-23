@@ -1,12 +1,10 @@
 $LOAD_PATH << '.'
 require 'producer.rb'
 require 'instance_counter.rb'
-require 'validator.rb'
 
 class Train  # super класс создаем поезд
   include Producer
   include Instance_counter
-  include Validator
   attr_accessor :speed, :train_num, :train_type, :train_type_name
   attr_reader :current_station, :current_station_name
   @@all_trains=[]
@@ -101,5 +99,20 @@ class Train  # super класс создаем поезд
     puts "текущая станция #{@route.station_list[@current_station]}"
     puts "предыдущая станция #{@route.station_list[@current_station-1]}"
     puts "следующая станция #{@route.station_list[@current_station]+1}"
+  end
+
+  def valid?
+    validate!
+    true
+  rescue
+    false
+  end
+
+  private # метод для валидации введенного значения
+  def validate!
+    pattern = /^([а-я]|\d)([а-я]|\d)([а-я]|\d)(-|)([а-я]|\d)([а-я]|\d)/i
+    raise "Номер не соответствует шаблону" if @train_num !~ pattern
+    raise "Номер не может быть пустым" if @train_num==""
+    raise "Номер не может быть меньше 3х символов" if @train_num.length<3
   end
 end

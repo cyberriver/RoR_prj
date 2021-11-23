@@ -22,18 +22,19 @@ class Station #
     @arrived_trains = []
     @@stations +=1
     register_instances
+    validate!
   end
 
   def arrival (train) #прибытие поезда на станцию
     @arrived_trains.push(train)
-    puts "log: на станцию #{@station_name} прибыл поезд #{@arrived_trains.last.train_name}"
+    puts "На станцию #{@station_name} прибыл поезд #{@arrived_trains.last.train_name}"
   end
 
   def display #показать все поезда на станции
     if @arrived_trains.nil?
       puts "На станции нет поездов"
     else
-      puts "log: На стации  #{@station_name} стоят следующие поезда:"
+      puts "На стации  #{@station_name} стоят следующие поезда:"
       @arrived_trains.each do  |key|
         puts "поезд № #{key.train_name}, тип поезда #{key.train_type}"
       end
@@ -64,5 +65,18 @@ class Station #
   def departure (train)
     @arrived_trains.delete(train)
     puts "поезд №#{train.train_name} покинул станцию #{@station_name}"
+  end
+
+  def valid?
+    validate!
+    true
+  rescue
+    false
+  end
+
+  private # метод для валидации введенного значения
+  def validate!
+    raise "Название станции не может быть пустым" if @station_name ==""
+    raise "Название станции не может быть меньше 5 символов" if @station_name.length<5
   end
 end

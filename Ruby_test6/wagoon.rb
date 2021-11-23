@@ -1,10 +1,8 @@
 $LOAD_PATH << '.'
 require 'producer.rb'
-require 'validator.rb'
 
 class Wagoon
   include Producer
-  include Validator
   attr_accessor :wagoon_type,:wagoon_name
 
   def initialize()
@@ -21,5 +19,20 @@ class Wagoon
     end
   end
 
+  def valid?
+    validate!
+    true
+  rescue
+    false
+  end
+
+  private
+  def validate!
+    if [1,2].include?(@wagoon_type)
+      return
+    else
+      raise "Вы ввели не существующий тип вагона"
+    end
+  end
 
 end

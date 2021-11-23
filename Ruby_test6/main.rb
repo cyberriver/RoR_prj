@@ -149,6 +149,9 @@ class Main
     @stations.push(Station.new(gets.chomp.to_s))
     puts "log: создана станция #{@stations.last.station_name}"
     puts STATION_MENU
+  rescue RuntimeError=>e
+    puts "log:#{e.message}"
+    retry
   end
 
   def display_station
@@ -180,6 +183,9 @@ class Main
     puts "Создан маршрут #{@route_name}"
     puts "начальная станция: #{@stations[b].station_name}, конечная станция: #{@stations[e].station_name} "
     puts ROUTES_MENU
+  rescue RuntimeError=>e
+    puts "log:#{e.message}"
+    retry
   end
 
   def display_route
@@ -225,11 +231,23 @@ class Main
     print "тип поезда: "
     o = gets.chomp.to_i
     if o ==1
+      begin
       puts "введите номер нового грузового поезда: "
       @trains.push(Cargo_train.new(gets.chomp.to_s))
+
+      rescue RuntimeError=>e
+        puts "log:#{e.message}"
+        retry
+      end
+
     elsif o ==2
+      begin
       puts "введите номер нового пассажирского поезда: "
       @trains.push(Passenger_train.new(gets.chomp.to_s))
+      rescue RuntimeError=>e
+      puts "log:#{e.message}"
+      retry
+      end
     else
       puts "вы ввели что-то нето"
     end
@@ -307,6 +325,9 @@ class Main
 
   def create_wagoon
     @wagoons.push(Wagoon.new())
+  rescue RuntimeError=>e
+    puts "log:#{e.message}"
+    retry
   end
 
   def display_wagoon
