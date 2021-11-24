@@ -30,6 +30,12 @@ class Train  # super класс создаем поезд
     validate!
   end
 
+  def block_call (block)
+    @wagoons.each do |wagoon|
+        block.call(wagoon)
+    end
+  end
+
   def gas_on (delta) #повышение скорости поезда на дельту
     @speed +=delta
   end
@@ -61,9 +67,8 @@ class Train  # super класс создаем поезд
   end
 
   def set_route (route) #назначить маршрут
-    @route = route
     puts "назначен маршрут #{@route.route_name}"
-    puts @route.begin_station
+    puts @route.station1
     @current_station = 0
     @current_station_name =@route.station_list[0]
   end

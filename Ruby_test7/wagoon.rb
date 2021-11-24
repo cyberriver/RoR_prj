@@ -5,12 +5,8 @@ class Wagoon
   include Producer
   attr_accessor :wagoon_type,:wagoon_name
 
-  def initialize()
-    puts "выберите тип вагона"
-    puts "1 - вагон грузовой"
-    puts "2 - вагон пассажирский"
-    @wagoon_type = gets.chomp.to_i
-
+  def initialize(type, par)
+    @wagoon_type = type
     case @wagoon_type
     when 1 then @wagoon_name = "вагон пассажирский"
     when 2 then @wagoon_name = "вагон грузовой"
@@ -24,6 +20,10 @@ class Wagoon
     true
   rescue
     false
+  end
+
+  def sit_down
+    @wagoon_name
   end
 
   private

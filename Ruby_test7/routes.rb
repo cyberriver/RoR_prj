@@ -2,7 +2,7 @@ $LOAD_PATH << '.'
 require 'instance_counter.rb'
 
 class Route
-  attr_accessor :route_name
+  attr_accessor :route_name, :station1, :station2, :station_list
   attr_reader :station_list, :deleted
   include Instance_counter
 

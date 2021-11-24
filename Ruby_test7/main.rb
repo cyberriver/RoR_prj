@@ -22,6 +22,7 @@ class Main
   1 - создать станцию
   2 - просмотреть все доступные станции
   3 - просмотреть количество поездов на станции
+  4 - показать все поезда на станции
   0 - вернуться в предыдущее меню'
   ROUTES_MENU =
   '
@@ -70,6 +71,7 @@ class Main
           when 1 then self.create_station
           when 2 then self.display_station
           when 3 then self.count_trains
+          when 4 then self.display_trains_on_station
           when 0 then break
           else
             puts "вы ввели некорректное значение"
@@ -224,6 +226,14 @@ class Main
     end
   end
 
+  def display_trains_on_station
+    my_proc = Proc.new {|x| puts x}
+    Station.all
+    puts "выберите станцию"
+    i = gets.chomp-1
+    @stations[i].block_call(my_proc)
+  end
+
   def create_train
     puts "Выберите какой поезд создать"
     puts "1 - грузовой"
@@ -324,7 +334,18 @@ class Main
   end
 
   def create_wagoon
-    @wagoons.push(Wagoon.new())
+    puts "выберите тип вагона"
+    puts "1 - вагон грузовой"
+    puts "2 - вагон пассажирский"
+    type = gets.chomp.to_i
+    case type
+    when 1 then puts "укажите количество мест в вагоне"
+      par = gets.chomp.to_i
+    when 2 then puts "укажите объем грузового вагона"
+      par = gets.chomp.to_i
+    else raise "Вы ввели некорректное значение"
+    end
+    @wagoons.push(Wagoon.new(type,par))
   rescue RuntimeError=>e
     puts "log:#{e.message}"
     retry

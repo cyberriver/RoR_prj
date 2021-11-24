@@ -55,6 +55,12 @@ class Station #
     puts "поезд №#{train.train_name} покинул станцию #{@station_name}"
   end
 
+  def block_call (block)
+    @arrived_trains.each do |train|
+        block.call(train)
+    end
+  end
+
   def valid?
     validate!
     true
