@@ -17,3 +17,4 @@ class Cargo_wagoon < Wagoon
     @busy_volume +=volume
   end
 end
+#

@@ -7,3 +7,4 @@ class Cargo_train < Train
     @train_type_name = "грузовой"
   end
 end
+#

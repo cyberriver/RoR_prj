@@ -1,7 +1,6 @@
 $LOAD_PATH << '.'
 require 'producer.rb'
 require 'instance_counter.rb'
-
 class Train  # super класс создаем поезд
   include Producer
   include Instance_counter

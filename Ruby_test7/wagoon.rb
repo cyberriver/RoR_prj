@@ -30,5 +30,4 @@ class Wagoon
   def validate!
     raise "Вы ввели не существующий тип вагона" unless [1, 2].include?(@wagoon_type)
   end
-
 end

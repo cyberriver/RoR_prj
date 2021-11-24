@@ -1,6 +1,5 @@
 $LOAD_PATH << '.'
 require 'wagoon.rb'
-
 class Passenger_wagoon < Wagoon
 
   attr_reader :free_space, :busy_space

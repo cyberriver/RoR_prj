@@ -1,5 +1,4 @@
 class Main
-
   require_relative  'station.rb'
   require_relative  'trains.rb'
   require_relative  'routes.rb'

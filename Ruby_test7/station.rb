@@ -1,6 +1,5 @@
 $LOAD_PATH << '.'
 require 'instance_counter.rb'
-
 class Station #
   attr_accessor :station_name, :arrived_trains
   include Instance_counter

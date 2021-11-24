@@ -10,7 +10,7 @@ module Validator
     false
   end
 
-  private # метод для валидации введенного значения
+  private 
   def validate!
     if [1,2].include?(@wagoon_type)
       return
