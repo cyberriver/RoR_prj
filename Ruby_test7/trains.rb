@@ -5,7 +5,7 @@ class Train  # super класс создаем поезд
   include Producer
   include Instance_counter
   attr_accessor :speed, :train_num, :train_type, :train_type_name
-  attr_reader :current_station, :current_station_name
+  attr_reader :current_station, :current_station_name, :wagoons
   @@all_trains=[]
   PATTERN = /^([а-я]|\d)([а-я]|\d)([а-я]|\d)(-|)([а-я]|\d)([а-я]|\d)/i
 

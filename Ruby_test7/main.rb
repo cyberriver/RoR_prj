@@ -41,12 +41,13 @@ class Main
   5 - назначить маршрут поезду
   6 - поехать по маршруту
   7 - вернуться назад по маршруту
+  8 - занять место / объем в вагоне
   0 - вернуться в предыдущее меню'
   WAGOON_MENU =
   '
   Выберите раздел
   1 - создать вагон
-  2 - просмотреть все вагоны
+  2 - просмотреть все вагоны у поезда
   0 - вернуться в предыдущее меню'
 
   def initialize
@@ -89,6 +90,7 @@ class Main
           when 5 then self.set_route
           when 6 then self.move_on
           when 7 then self.move_back
+          when 8 then self.fullfill_wagoon
           when 0 then break
           else
             puts "вы ввели некорректное значение"
@@ -101,7 +103,7 @@ class Main
         loop do
           case a2
           when 1 then self.create_wagoon
-          when 2 then self.display_wagooROUTESn
+          when 2 then self.display_train_wagoon
           when 0 then break
           else
             puts "вы ввели некорректное значение"
@@ -143,6 +145,28 @@ class Main
       k +=1
     end
     puts ROUTES_MENU
+  end
+
+  def fullfill_wagoon
+    self.display_train?
+    puts "Выберите поезд"
+    i = gets.chomp.to_i
+    k=0
+    @trains[i].wagoons.each {|value| puts "#{k}.№ вагона #{value.object_id} тип вагона #{value.wagoon_name}";k += 1}
+    puts "Выберите вагон"
+    k = gets.chomp.to_i
+    case @trains[i].wagoons[k].wagoon_type
+    when 1 then @trains[i].wagoons[k].fill_wagoon(1)
+    when 2 then
+      puts "укажите помещаемый объем"
+      volume = gets.chomp.to_i
+      @trains[i].wagoons[k].fill_wagoon(volume)
+      puts "доступное место в вагоне #{@trains[i].wagoons[k].free_space}"
+      puts "занято в вагоне #{@trains[i].wagoons[k].busy_space}"
+    else
+      puts "что-то не то с вагоном"
+    end
+    puts WAGOON_MENU
   end
 
   def create_station
@@ -235,30 +259,29 @@ class Main
 
   def create_train
     puts "Выберите какой поезд создать"
-    puts "1 - грузовой"
-    puts "2 - пассажирский"
+    puts "1 - пассажирский"
+    puts "2 - грузовой"
     print "тип поезда: "
-    o = gets.chomp.to_i
-    if o ==1
+    k = gets.chomp.to_i
+    case k
+    when 1 then
       begin
-      puts "введите номер нового грузового поезда: "
-      @trains.push(Cargo_train.new(gets.chomp.to_s))
-
+        puts "введите номер нового пассажирского поезда: "
+        @trains.push(Passenger_train.new(gets.chomp.to_s))
       rescue RuntimeError=>e
         puts "log:#{e.message}"
         retry
       end
-
-    elsif o ==2
+    when 2 then
       begin
-      puts "введите номер нового пассажирского поезда: "
-      @trains.push(Passenger_train.new(gets.chomp.to_s))
+        puts "введите номер нового грузового поезда: "
+        @trains.push(Cargo_train.new(gets.chomp.to_s))
       rescue RuntimeError=>e
-      puts "log:#{e.message}"
-      retry
+        puts "log:#{e.message}"
+        retry
       end
     else
-      puts "вы ввели что-то нето"
+      puts "вы выбрали что-то непонятное"
     end
     puts TRAIN_MENU
   end
@@ -334,29 +357,28 @@ class Main
 
   def create_wagoon
     puts "выберите тип вагона"
-    puts "1 - вагон грузовой"
-    puts "2 - вагон пассажирский"
+    puts "1 - вагон пассажирский"
+    puts "2 - вагон грузовой"
     type = gets.chomp.to_i
     case type
     when 1 then puts "укажите количество мест в вагоне"
-      par = gets.chomp.to_i
     when 2 then puts "укажите объем грузового вагона"
-      par = gets.chomp.to_i
     else raise "Вы ввели некорректное значение"
     end
+    par = gets.chomp.to_i
     @wagoons.push(Wagoon.new(type,par))
+    puts WAGOON_MENU
   rescue RuntimeError=>e
     puts "log:#{e.message}"
     retry
   end
 
-  def display_wagoon
-    puts "список вагонов"
+  def display_train_wagoon
     i = 0
-    @wagoons.each do |value|
-      puts "#{i}.#{value.wagoon_name}"
-      i +=1
-    end
+    @trains.each {|train| puts "#{i}.#{train.train_num}";i+=1}
+    puts "выберите пжлста поезд"
+    i=gets.chomp.to_i
+    @trains[i].wagoons.each {|value| puts "#{i}.#{value.object_id}#{value.wagoon_name}";i += 1}
     puts WAGOON_MENU
   end
 
@@ -373,7 +395,7 @@ class Main
     puts "список всех вагонов"
     i = 0
     @wagoons.each do |value|
-      puts "#{i}.#{value.wagoon_name}"
+      puts "#{i}.№ вагона #{value.object_id}, тип вагона - #{value.wagoon_name}"
       i +=1
     end
   end
