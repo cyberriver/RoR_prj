@@ -267,7 +267,7 @@ class Main
     when 1 then
       begin
         puts "введите номер нового пассажирского поезда: "
-        @trains.push(Passenger_train.new(gets.chomp.to_s))
+        @trains.push(PassengerTrain.new(gets.chomp.to_s))
       rescue RuntimeError=>e
         puts "log:#{e.message}"
         retry
@@ -275,7 +275,7 @@ class Main
     when 2 then
       begin
         puts "введите номер нового грузового поезда: "
-        @trains.push(Cargo_train.new(gets.chomp.to_s))
+        @trains.push(CargoTrain.new(gets.chomp.to_s))
       rescue RuntimeError=>e
         puts "log:#{e.message}"
         retry

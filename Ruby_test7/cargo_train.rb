@@ -1,5 +1,5 @@
 require_relative  'trains.rb'
-class Cargo_train < Train
+class CargoTrain < Train
   def initialize (num)
     super
     @train_type = 2
