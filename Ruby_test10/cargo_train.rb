@@ -6,8 +6,9 @@ require 'accessors'
 
 require_relative 'trains'
 class CargoTrain < Train
-  extend  Accessors
+  include  Accessors
   attr_accessor_with_history :a, :b, :c
+  strong_attr_accessor :a1, String
 
   def initialize(num)
     super

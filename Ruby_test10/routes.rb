@@ -16,7 +16,8 @@ class Route
     @station2 = station2
     @station_list = [@station1, @station2]
     register_instances
-    validate!
+    validate! :station1, :presense
+    validate! :station2, :presense
   end
 
   # Добавляем промежуточную станцию, при этом последняя всегда сдвигается
@@ -49,16 +50,4 @@ class Route
     end
   end
 
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
-
-  private # метод для валидации введенного значения
-
-  def validate!
-    [@station1, @station2].each { |station| raise 'Название станции не может быть пустым' if station == '' }
-  end
 end

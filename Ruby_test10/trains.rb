@@ -4,8 +4,11 @@
 $LOAD_PATH << '.'
 require 'producer'
 require 'instance_counter'
+require 'validation'
 # super класс создаем поезд
 class Train
+  extend Validation::ClassMethods
+  include Validation::InstanceMethods
   include Producer
   include InstanceCounter
   attr_accessor :speed, :train_num, :train_type, :train_type_name
@@ -29,7 +32,7 @@ class Train
     @train_type_name = 'metaTrain'
     @wagoons = []
     register_instances
-    validate!
+    validate! :train_num, :format, PATTERN
   end
 
   def block_call(block)
@@ -114,18 +117,4 @@ class Train
     puts "следующая станция #{@route.station_list[@current_station] + 1}"
   end
 
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
-
-  private # метод для валидации введенного значения
-
-  def validate!
-    raise 'Номер не соответствует шаблону' if @train_num !~ PATTERN
-    raise 'Номер не может быть пустым' if @train_num == ''
-    raise 'Номер не может быть меньше 3х символов' if @train_num.length < 3
-  end
 end
