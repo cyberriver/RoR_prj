@@ -1,6 +1,5 @@
 # main interface class
 # frozen_string_literal: true
-
 $LOAD_PATH << '.'
 require 'station_operations'
 require 'trains_operations'

@@ -116,5 +116,4 @@ class Train
     puts "предыдущая станция #{@route.station_list[@current_station - 1]}"
     puts "следующая станция #{@route.station_list[@current_station] + 1}"
   end
-
 end

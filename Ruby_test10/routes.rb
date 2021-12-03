@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 # This class for routes management
 
 $LOAD_PATH << '.'
@@ -49,5 +48,4 @@ class Route
       i += 1
     end
   end
-
 end

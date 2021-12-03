@@ -3,9 +3,12 @@
 
 $LOAD_PATH << '.'
 require 'instance_counter'
+require 'validation'
+
 class Station
   attr_accessor :station_name, :arrived_trains
-
+  extend Validation::ClassMethods
+  include Validation::InstanceMethods
   include InstanceCounter
   @@stations = 0
   @@all_stations = []
@@ -26,7 +29,7 @@ class Station
     @arrived_trains = []
     @@stations += 1
     register_instances
-    validate!
+    validate :station_name, :presense
   end
 
   # прибытие поезда на станцию
@@ -67,17 +70,4 @@ class Station
     end
   end
 
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
-
-  private # метод для валидации введенного значения
-
-  def validate!
-    raise 'Название станции не может быть пустым' if @station_name == ''
-    raise 'Название станции не может быть меньше 5 символов' if @station_name.length < 5
-  end
 end

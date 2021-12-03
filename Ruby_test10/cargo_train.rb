@@ -1,12 +1,13 @@
 # this class for Cargo train
 # frozen_string_literal: true
+
 $LOAD_PATH << '.'
 require 'instance_counter'
 require 'accessors'
 
 require_relative 'trains'
 class CargoTrain < Train
-  include  Accessors
+  include Accessors
   attr_accessor_with_history :a, :b, :c
   strong_attr_accessor :a1, String
 

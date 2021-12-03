@@ -9,3 +9,4 @@ class PassengerTrain < Train
     @train_type_name = 'пассажирский'
   end
 end
+#
