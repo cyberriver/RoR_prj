@@ -29,7 +29,7 @@ class Station
     @arrived_trains = []
     @@stations += 1
     register_instances
-    validate :station_name, :presense
+    validate! :station_name, :presense
   end
 
   # прибытие поезда на станцию
