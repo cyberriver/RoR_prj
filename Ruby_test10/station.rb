@@ -6,10 +6,15 @@ require 'instance_counter'
 require 'validation'
 
 class Station
+  PATTERN_STATION_NAME = /[а-я]*/i.freeze
   attr_accessor :station_name, :arrived_trains
   extend Validation::ClassMethods
   include Validation::InstanceMethods
   include InstanceCounter
+  validate :station_name, :presense
+  validate :station_name, :format, PATTERN_STATION_NAME
+
+
   @@stations = 0
   @@all_stations = []
 
@@ -29,7 +34,7 @@ class Station
     @arrived_trains = []
     @@stations += 1
     register_instances
-    validate! :station_name, :presense
+    #  validate! :station_name, :presense
   end
 
   # прибытие поезда на станцию
