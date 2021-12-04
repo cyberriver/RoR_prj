@@ -7,15 +7,17 @@ require 'instance_counter'
 require 'validation'
 # super класс создаем поезд
 class Train
+  PATTERN = /^([а-я]|\d)([а-я]|\d)([а-я]|\d)(-|)([а-я]|\d)([а-я]|\d)/i.freeze
   extend Validation::ClassMethods
   include Validation::InstanceMethods
   include Producer
   include InstanceCounter
   attr_accessor :speed, :train_num, :train_type, :train_type_name
   attr_reader :current_station, :current_station_name, :wagoons
+  validate :train_num, :format, PATTERN
 
   @@all_trains = []
-  PATTERN = /^([а-я]|\d)([а-я]|\d)([а-я]|\d)(-|)([а-я]|\d)([а-я]|\d)/i.freeze
+
 
   def self.find(num)
     @@all_trains = ObjectSpace.each_object(self).to_a
@@ -32,7 +34,6 @@ class Train
     @train_type_name = 'metaTrain'
     @wagoons = []
     register_instances
-    validate! :train_num, :format, PATTERN
   end
 
   def block_call(block)

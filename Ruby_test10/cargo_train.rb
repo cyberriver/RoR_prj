@@ -4,6 +4,7 @@
 $LOAD_PATH << '.'
 require 'instance_counter'
 require 'accessors'
+require 'validation'
 
 require_relative 'trains'
 class CargoTrain < Train
@@ -15,5 +16,6 @@ class CargoTrain < Train
     super
     @train_type = 2
     @train_type_name = 'грузовой'
+    validate!
   end
 end
