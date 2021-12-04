@@ -28,9 +28,7 @@ module Validation
     def validate_data
       return @@validate_data
     end
-
   end
-
 
   module InstanceMethods
     def valid?
@@ -47,54 +45,7 @@ module Validation
         puts "var = > #{var}"
         validate_choose(hash,var)
       end
-#SOLUTION 2 NOT WORKING
-    #  self.instance_variables.each do |var|
-    #    puts"instance var #{var}"
-      #  var_key = eval(var.to_sym)
-    #    self.class.validate_data.each do |hash|
-    #      puts "log: hash = #{hash}"
-    #      if hash.key(var)
-        #  if hash.has_key? 'var'
-    #      run_data.push(hash[var])
-    #      end
-    #      puts "log: run_data=#{run_data}"
-    #    end
-
-    #  end
     end
-    #=== SOLUTION 1
-    #  run_data=[]
-    #  check=0
-    #  self.class.validate_data.each do |hash|
-    #    puts "log: hash = #{hash}"
-    #    puts "var = #{var.to_sym}"
-    #    puts "hash[:name] #{hash[:name]}"
-
-    #    if hash[:name]==var.to_sym
-    #      run_data.push(hash)
-    #    end
-      #  hash.each do |key,value|
-      #    puts "log: key= #{key}, value= #{value}"
-      #    puts "#{check}run_data #{run_data}"
-      #    if key=var.to_sym
-      #      then run_data.push(hash)
-      #  end
-      #  check +=1
-      #  puts "#{check}run_data #{run_data}"
-      #end
-    #  puts "log: run_data=#{run_data}"
-    #  end
-    #
-
-    #  run_data.each do |hash|
-    #      validate_choose(hash,var)
-    #  end
-
-  #  rescue StandardError => e
-  #    puts e.inspect
-  #    puts e.backtrace.inspect
-
-  #  end
 
     def validate_choose(hash,name)
       case hash[:validation_type]
