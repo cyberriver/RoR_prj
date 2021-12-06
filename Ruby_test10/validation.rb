@@ -12,15 +12,8 @@ module Validation
       hash_data ||= {}
       hash_data[:name] = name.to_s
       hash_data[:validation_type] = type
-      params.each do |value|
-        if value.is_a?(Regexp)
-          hash_data[:reg]=value
-        elsif hash_data[:validation_type] == :type
-          hash_data[:klass]=value
-        else
-        hash_data[value.to_sym]=value
-      end
-      end
+      hash_data[:params] =params
+      hash_data.each {|key,value| puts"hash_data; key: #{key}, value: #{value}"}
       @@validate_data.push(hash_data)
       puts "log: validate_data => #{@@validate_data}"
     end
@@ -41,37 +34,32 @@ module Validation
     def validate!
       run_data=[] #определяем проверки для каждой переменной
       self.class.validate_data.each do |hash|
-        var = instance_variable_get("@#{hash[:name]}")
-        puts "var = > #{var}"
-        validate_choose(hash,var)
+        self.instance_variables.each do |obj_var|
+        puts "obj_var = #{obj_var}"
+        var = instance_variable_get(obj_var)
+        puts "var = #{var}"
+        send("validate_#{hash[:validation_type]}",var,hash[:params]) unless var==[]
+        puts "log:validate!: #{hash[:validation_type]} - OK"
       end
-    end
-
-    def validate_choose(hash,name)
-      case hash[:validation_type]
-      when :presense then validate_presense(name)
-      when :format then validate_format(name, hash[:reg])
-      when :type then validate_type_check(name, hash[:klass])
-      else return
       end
-      puts "log: #{hash[:validation_type]} OK"
-    rescue StandardError => e
-      puts e.inspect
-      puts "log: #{hash[:validation_type]} not OK"
     end
 
     private
 
-    def validate_presense(name)
+    def validate_presense(name,params)
       raise "can't be nil or empty" if name == '' || name.nil?
     end
 
-    def validate_format(name, reg)
-      raise 'invalid format' unless name =~ reg
+    def validate_format(name, params)
+      puts "validate_format:LOG name #{name}, params #{params}"
+      str = params.inspect
+      reg = Regexp.new(str)
+      puts "reg: #{reg}"
+      raise "invalid format #{name}, mask #{params}" unless name.to_s =~ reg
     end
 
-    def validate_type_check(name,klass)
-      raise 'incorrect class - mismatch' unless name.is_a?(klass)
+    def validate_type_check(name,params)
+      raise "incorrect class - mismatch" unless name.is_a?(params)
     end
   end
 end

@@ -17,5 +17,7 @@ class CargoTrain < Train
     @train_type = 2
     @train_type_name = 'грузовой'
     validate!
+  rescue
+    retry
   end
 end

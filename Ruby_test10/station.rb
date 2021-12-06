@@ -13,8 +13,6 @@ class Station
   include InstanceCounter
   validate :station_name, :presense
   validate :station_name, :format, PATTERN_STATION_NAME
-  validate :train_name, :presense
-
 
   @@stations = 0
   @@all_stations = []
@@ -34,7 +32,6 @@ class Station
     @station_name = station_name
     @arrived_trains = []
     @@stations += 1
-    @train_name="Test"
     register_instances
     validate!
   end
